@@ -7,8 +7,7 @@ import { usePathname } from "next/navigation";
 type Props = { href: string; children: React.ReactNode };
 const base = "rounded px-3 py-1.5 hover:bg-slate-700";
 
-// the pathname is runtime data on dynamic routes, so the plain link is prerendered
-// and only the "active" highlight streams in
+// usePathname has to be inside Suspense with cacheComponents
 export default function NavLink(props: Props) {
   return (
     <Suspense fallback={<Link href={props.href} className={base}>{props.children}</Link>}>

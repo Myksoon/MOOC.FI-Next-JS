@@ -14,7 +14,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
       <body>
-        {/* no session prop: the client fetches it, so the layout doesn't read cookies and stays static */}
         <SessionProvider>
           <NotificationProvider>
             <NavBar />

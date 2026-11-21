@@ -5,8 +5,7 @@ import { markBlogAsRead } from "../actions/readingList";
 import { getReadingList } from "../services/readingList";
 import { getCurrentUser } from "../services/session";
 
-// Render the whole page before sending it, instead of streaming it into a <Suspense> fallback.
-// Streamed content first arrives as a hidden copy, which makes every test id briefly match twice.
+// no streaming here, otherwise the e2e tests find the test ids twice
 export const instant = false;
 
 const section = "mb-6 rounded border border-slate-200 bg-white p-6";

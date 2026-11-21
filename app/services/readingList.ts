@@ -15,11 +15,9 @@ export const isInReadingList = async (userId: number, blogId: number) =>
     columns: { id: true },
   }));
 
-// the unique (user, blog) constraint makes a second add a no-op
 export const addToReadingList = (userId: number, blogId: number) =>
   db.insert(readingList).values({ userId, blogId }).onConflictDoNothing();
 
-// scoped to userId so a user can only change their own list
 export const markAsRead = (userId: number, blogId: number) =>
   db
     .update(readingList)

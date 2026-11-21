@@ -6,7 +6,6 @@ export default function Users() {
   return (
     <div>
       <h2>Users</h2>
-      {/* uncached DB read, so with cacheComponents it streams inside <Suspense> */}
       <Suspense fallback={<p>Loading...</p>}>
         <UserList />
       </Suspense>

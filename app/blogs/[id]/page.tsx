@@ -5,8 +5,7 @@ import { addBlogToReadingList } from "../../actions/readingList";
 import { isInReadingList } from "../../services/readingList";
 import { getCurrentUser } from "../../services/session";
 
-// Render the whole page before sending it, instead of streaming it into a <Suspense> fallback.
-// Streamed content first arrives as a hidden copy, which makes every test id briefly match twice.
+// no streaming here, otherwise the e2e tests find the test ids twice
 export const instant = false;
 
 export default async function BlogPage({ params }: PageProps<"/blogs/[id]">) {
@@ -15,7 +14,6 @@ export default async function BlogPage({ params }: PageProps<"/blogs/[id]">) {
   if (!blog) notFound();
 
   const user = await getCurrentUser();
-  // offered only to logged-in users for blogs someone else added and not yet on their list
   const canAddToList = user && blog.userId !== user.id && !(await isInReadingList(user.id, blog.id));
 
   return (

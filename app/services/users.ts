@@ -4,7 +4,6 @@ import { users } from "../../db/schema";
 
 export const getUsers = () => db.select().from(users).orderBy(users.name);
 
-// one query: the user row plus their blogs, joined by the relations in db/schema.ts
 export const getUserWithBlogs = (username: string) =>
   db.query.users.findFirst({
     where: eq(users.username, username),
@@ -19,7 +18,6 @@ export const addUser = (user: typeof users.$inferInsert) => db.insert(users).val
 export const setToken = (userId: number, token: string) =>
   db.update(users).set({ token }).where(eq(users.id, userId));
 
-// only public fields: never the password hash or the token itself
 export const getUserByToken = (token: string) =>
   db.query.users.findFirst({
     where: eq(users.token, token),

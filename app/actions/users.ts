@@ -9,7 +9,6 @@ import { getCurrentUser } from "../services/session";
 type RegisterValues = { username: string; name: string };
 export type RegisterFormState = {
   errors?: Partial<Record<"username" | "name" | "password" | "passwordConfirm", string>>;
-  // passwords are never sent back to the browser
   values?: RegisterValues;
   success?: boolean;
 };

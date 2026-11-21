@@ -21,9 +21,7 @@ export default function Blogs({ searchParams }: PageProps<"/blogs">) {
           search
         </button>
       </form>
-      {/* searchParams is runtime data, so with cacheComponents it must be read inside <Suspense>.
-          The test id sits outside it: streamed content first arrives in a hidden copy, and a
-          test id inside would briefly match twice */}
+      {/* testid outside Suspense so the tests don't match the streamed copy too */}
       <div data-testid="blogs-list">
         <Suspense fallback={<p>Loading...</p>}>
           <BlogList searchParams={searchParams} />
@@ -35,7 +33,6 @@ export default function Blogs({ searchParams }: PageProps<"/blogs">) {
 
 async function BlogList({ searchParams }: Pick<PageProps<"/blogs">, "searchParams">) {
   const { filter } = await searchParams;
-  // filtering (ilike) and sorting (likes desc) happen in the database
   const blogs = await getBlogs(typeof filter === "string" ? filter : "");
 
   return (

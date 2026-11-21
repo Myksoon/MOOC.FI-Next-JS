@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUserWithBlogs } from "../../services/users";
 
-// params is runtime data, so with cacheComponents it must be read inside <Suspense>
 export default function UserPage({ params }: PageProps<"/users/[username]">) {
   return (
     <Suspense fallback={<p>Loading...</p>}>

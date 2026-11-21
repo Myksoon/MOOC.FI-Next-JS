@@ -7,7 +7,7 @@ export async function DELETE() {
     return NextResponse.json({ error: "This endpoint is not available in production" }, { status: 403 });
   }
 
-  // children before parents, so no foreign key is left pointing at a deleted row
+  // order matters because of the foreign keys
   await db.delete(readingList);
   await db.delete(blogs);
   await db.delete(users);

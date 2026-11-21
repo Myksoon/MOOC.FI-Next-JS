@@ -26,7 +26,6 @@ export async function createBlog(_prev: BlogFormState, formData: FormData): Prom
     if (!value) errors[field] = `${field} is required`;
     else if (value.length < 5) errors[field] = `${field} must be at least 5 characters`;
   }
-  // values go back so the form keeps what the user typed
   if (Object.keys(errors).length) return { errors, values };
 
   await addBlog({ ...values, userId: user.id });

@@ -14,7 +14,7 @@ export default function NavBar() {
     await signOut({ redirect: false });
     notify("logged out");
     router.push("/");
-    router.refresh(); // re-render server components that read the session
+    router.refresh();
   };
 
   return (
@@ -22,7 +22,6 @@ export default function NavBar() {
       <NavLink href="/">home</NavLink>
       <NavLink href="/blogs">blogs</NavLink>
       <NavLink href="/users">users</NavLink>
-      {/* status is "loading" until the session is fetched, so neither set of links flashes */}
       {status === "authenticated" && (
         <>
           <NavLink href="/blogs/new">create new</NavLink>

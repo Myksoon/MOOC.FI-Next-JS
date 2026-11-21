@@ -14,7 +14,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const notify = (message: string, type: Notification["type"] = "success") => {
-    clearTimeout(timer.current); // a new message gets its own full 5 seconds
+    clearTimeout(timer.current);
     setNotification({ message, type });
     timer.current = setTimeout(() => setNotification(null), 5000);
   };

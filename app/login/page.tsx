@@ -12,7 +12,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
-  // onSubmit instead of a form action, so a failed login doesn't clear the inputs
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -24,8 +23,7 @@ export default function Login() {
         redirect: false,
       });
     let result = await login();
-    // on a fresh browser, the page's first auth requests can race and replace the CSRF cookie
-    // the token was read from; by now the cookie has settled, so one retry succeeds
+    // first login in a fresh browser sometimes fails with MissingCSRF, a retry fixes it
     if (result?.error === "MissingCSRF") result = await login();
     setPending(false);
     if (result?.error) {
@@ -34,7 +32,7 @@ export default function Login() {
     }
     notify("logged in");
     router.push("/");
-    router.refresh(); // re-render server components that read the session
+    router.refresh();
   };
 
   return (

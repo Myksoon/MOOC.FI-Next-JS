@@ -1,4 +1,3 @@
-// a labelled input with its validation error; the error's test id is "<name>-error"
 export default function Field({
   label,
   name,

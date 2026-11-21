@@ -26,7 +26,6 @@ export const readingList = pgTable(
     blogId: integer("blog_id").notNull().references(() => blogs.id),
     read: boolean("read").notNull().default(false),
   },
-  // a blog can be on a user's list only once
   (table) => [unique().on(table.userId, table.blogId)],
 );
 
