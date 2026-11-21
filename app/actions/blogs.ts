@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { addBlog } from "../services/blogs";
+import { addBlog, likeBlog } from "../services/blogs";
 
 export async function createBlog(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
@@ -13,4 +13,12 @@ export async function createBlog(formData: FormData) {
   addBlog({ title, author, url });
   revalidatePath("/blogs");
   redirect("/blogs");
+}
+
+export async function like(formData: FormData) {
+  const id = Number(formData.get("id"));
+  if (!likeBlog(id)) throw new Error(`blog ${id} not found`);
+
+  revalidatePath(`/blogs/${id}`);
+  revalidatePath("/blogs");
 }
