@@ -10,3 +10,18 @@ body {
     @apply cursor-pointer rounded bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60;
   }
 }
+
+/* Markdown output has no classes, so it is styled by element, scoped to .markdown */
+.markdown {
+  @apply leading-relaxed;
+  & h1 { @apply mb-4 text-3xl font-bold; }
+  & h2 { @apply mt-6 mb-3 text-2xl font-semibold; }
+  & h3 { @apply mt-4 mb-2 text-xl font-semibold; }
+  & p { @apply mb-4; }
+  & a { @apply text-blue-700 underline hover:text-blue-900; }
+  & ul { @apply mb-4 list-disc pl-6; }
+  & ol { @apply mb-4 list-decimal pl-6; }
+  & li { @apply mb-1; }
+  & blockquote { @apply mb-4 border-l-4 border-slate-300 pl-4 text-slate-600 italic; }
+  & code { @apply rounded bg-slate-200 px-1 py-0.5 text-sm; }
+}

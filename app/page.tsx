@@ -1,3 +1,9 @@
+import Homepage from "./homepage.mdx";
+
 export default function Home() {
-  return <h1>Blog app</h1>;
+  return (
+    <div className="markdown">
+      <Homepage />
+    </div>
+  );
 }
