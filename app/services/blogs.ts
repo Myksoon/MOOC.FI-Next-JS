@@ -20,3 +20,5 @@ export const addBlog = (blog: Omit<Blog, "id" | "likes">) => {
   blogs.push(newBlog);
   return newBlog;
 };
+
+export const getBlog = (id: number) => blogs.find((blog) => blog.id === id);
