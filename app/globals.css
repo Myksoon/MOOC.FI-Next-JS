@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 body {
-  padding: 1rem;
   font-family: Arial, Helvetica, sans-serif;
+  @apply bg-slate-50 text-slate-900;
+}
+
+@layer components {
+  .btn {
+    @apply cursor-pointer rounded bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60;
+  }
 }

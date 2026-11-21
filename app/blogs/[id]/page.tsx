@@ -18,17 +18,25 @@ async function Blog({ params }: Pick<PageProps<"/blogs/[id]">, "params">) {
   if (!blog) notFound();
 
   return (
-    <div>
-      <h2>{blog.title}</h2>
-      <p>by {blog.author}</p>
-      <p>
-        <a href={blog.url}>{blog.url}</a>
+    <article data-testid="blog-detail" className="rounded border border-slate-200 bg-white p-6">
+      <h2 data-testid="blog-title" className="text-2xl font-bold">
+        {blog.title}
+      </h2>
+      <p data-testid="blog-author" className="mb-3 text-slate-600">
+        by {blog.author}
       </p>
-      <form action={like}>
-        {blog.likes} likes{" "}
+      <p className="mb-4">
+        <a href={blog.url} className="break-all text-blue-700 hover:underline">
+          {blog.url}
+        </a>
+      </p>
+      <form action={like} className="flex items-center gap-3">
+        <span>{blog.likes} likes</span>
         <input type="hidden" name="id" value={blog.id} />
-        <button type="submit">like</button>
+        <button type="submit" className="btn">
+          like
+        </button>
       </form>
-    </div>
+    </article>
   );
 }

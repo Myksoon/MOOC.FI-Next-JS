@@ -1,0 +1,46 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import NavLink from "./NavLink";
+import { useNotification } from "./NotificationContext";
+
+export default function NavBar() {
+  const { data: session, status } = useSession();
+  const { notify } = useNotification();
+  const router = useRouter();
+
+  const logout = async () => {
+    await signOut({ redirect: false });
+    notify("logged out");
+    router.push("/");
+    router.refresh(); // re-render server components that read the session
+  };
+
+  return (
+    <nav className="mb-4 flex flex-wrap items-center gap-1 bg-slate-800 px-4 py-2 text-white">
+      <NavLink href="/">home</NavLink>
+      <NavLink href="/blogs">blogs</NavLink>
+      <NavLink href="/users">users</NavLink>
+      {/* status is "loading" until the session is fetched, so neither set of links flashes */}
+      {status === "authenticated" && (
+        <>
+          <NavLink href="/blogs/new">create new</NavLink>
+          <span className="ml-auto mr-2 text-slate-300">{session.user?.name} logged in</span>
+          <button
+            onClick={logout}
+            className="cursor-pointer rounded border border-slate-500 px-3 py-1.5 hover:bg-slate-700"
+          >
+            logout
+          </button>
+        </>
+      )}
+      {status === "unauthenticated" && (
+        <span className="ml-auto flex gap-1">
+          <NavLink href="/login">login</NavLink>
+          <NavLink href="/register">register</NavLink>
+        </span>
+      )}
+    </nav>
+  );
+}

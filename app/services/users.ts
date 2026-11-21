@@ -10,3 +10,8 @@ export const getUserWithBlogs = (username: string) =>
     where: eq(users.username, username),
     with: { blogs: true },
   });
+
+export const getUserByUsername = (username: string) =>
+  db.query.users.findFirst({ where: eq(users.username, username), columns: { id: true } });
+
+export const addUser = (user: typeof users.$inferInsert) => db.insert(users).values(user);

@@ -1,6 +1,6 @@
 import { desc, eq, ilike, sql } from "drizzle-orm";
 import { db } from "../../db";
-import { blogs, users } from "../../db/schema";
+import { blogs } from "../../db/schema";
 
 export type Blog = typeof blogs.$inferSelect;
 
@@ -11,10 +11,8 @@ export const getBlogById = (id: number) =>
   // a non-integer id (e.g. /blogs/abc) would be a Postgres type error, so treat it as not found
   Number.isInteger(id) ? db.query.blogs.findFirst({ where: eq(blogs.id, id) }) : Promise.resolve(undefined);
 
-export const addBlog = async (blog: Pick<Blog, "title" | "author" | "url">) => {
-  // no login yet, so the blog goes to a random existing user (null if there are none)
-  const [user] = await db.select({ id: users.id }).from(users).orderBy(sql`RANDOM()`).limit(1);
-  const [created] = await db.insert(blogs).values({ ...blog, userId: user?.id }).returning();
+export const addBlog = async (blog: Pick<Blog, "title" | "author" | "url" | "userId">) => {
+  const [created] = await db.insert(blogs).values(blog).returning();
   return created;
 };
 

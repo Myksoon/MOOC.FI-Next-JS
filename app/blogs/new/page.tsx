@@ -1,27 +1,10 @@
-import { createBlog } from "../../actions/blogs";
+import NewBlogForm from "./NewBlogForm";
 
 export default function NewBlog() {
   return (
-    <div>
-      <h2>Create new</h2>
-      <form action={createBlog}>
-        <div>
-          <label>
-            title <input name="title" required />
-          </label>
-        </div>
-        <div>
-          <label>
-            author <input name="author" />
-          </label>
-        </div>
-        <div>
-          <label>
-            url <input name="url" type="url" required />
-          </label>
-        </div>
-        <button type="submit">create</button>
-      </form>
+    <div className="max-w-md">
+      <h2 className="mb-4 text-2xl font-bold">Create new</h2>
+      <NewBlogForm />
     </div>
   );
 }

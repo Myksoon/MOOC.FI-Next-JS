@@ -15,6 +15,13 @@
       "when": 1795236691151,
       "tag": "0001_exotic_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795239015773,
+      "tag": "0002_quiet_shiva",
+      "breakpoints": true
     }
   ]
 }

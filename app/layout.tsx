@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import "./globals.css";
+import NavBar from "./components/NavBar";
+import Notification from "./components/Notification";
+import { NotificationProvider } from "./components/NotificationContext";
+import SessionProvider from "./components/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Blog app",
@@ -11,13 +14,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
       <body>
-        <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-          <Link href="/">home</Link>
-          <Link href="/blogs">blogs</Link>
-          <Link href="/blogs/new">create new</Link>
-          <Link href="/users">users</Link>
-        </nav>
-        {children}
+        {/* no session prop: the client fetches it, so the layout doesn't read cookies and stays static */}
+        <SessionProvider>
+          <NotificationProvider>
+            <NavBar />
+            <main className="mx-auto max-w-3xl px-4 pb-8">
+              <Notification />
+              {children}
+            </main>
+          </NotificationProvider>
+        </SessionProvider>
       </body>
     </html>
   );
