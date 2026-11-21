@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { generateToken } from "../actions/users";
@@ -6,18 +5,13 @@ import { markBlogAsRead } from "../actions/readingList";
 import { getReadingList } from "../services/readingList";
 import { getCurrentUser } from "../services/session";
 
-// the session is request data, so with cacheComponents it must be read inside <Suspense>
-export default function MePage() {
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Me />
-    </Suspense>
-  );
-}
+// Render the whole page before sending it, instead of streaming it into a <Suspense> fallback.
+// Streamed content first arrives as a hidden copy, which makes every test id briefly match twice.
+export const instant = false;
 
 const section = "mb-6 rounded border border-slate-200 bg-white p-6";
 
-async function Me() {
+export default async function Me() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 

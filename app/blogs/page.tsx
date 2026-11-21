@@ -21,10 +21,14 @@ export default function Blogs({ searchParams }: PageProps<"/blogs">) {
           search
         </button>
       </form>
-      {/* searchParams is runtime data, so with cacheComponents it must be read inside <Suspense> */}
-      <Suspense fallback={<p>Loading...</p>}>
-        <BlogList searchParams={searchParams} />
-      </Suspense>
+      {/* searchParams is runtime data, so with cacheComponents it must be read inside <Suspense>.
+          The test id sits outside it: streamed content first arrives in a hidden copy, and a
+          test id inside would briefly match twice */}
+      <div data-testid="blogs-list">
+        <Suspense fallback={<p>Loading...</p>}>
+          <BlogList searchParams={searchParams} />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -35,7 +39,7 @@ async function BlogList({ searchParams }: Pick<PageProps<"/blogs">, "searchParam
   const blogs = await getBlogs(typeof filter === "string" ? filter : "");
 
   return (
-    <ul data-testid="blogs-list" className="divide-y divide-slate-200 rounded border border-slate-200 bg-white">
+    <ul className="divide-y divide-slate-200 rounded border border-slate-200 bg-white">
       {blogs.map((blog) => (
         <li key={blog.id} className="flex items-baseline justify-between gap-4 px-4 py-3">
           <span>

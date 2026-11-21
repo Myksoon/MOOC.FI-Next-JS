@@ -17,11 +17,16 @@ export default function Login() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     setPending(true);
-    const result = await signIn("credentials", {
-      username: form.get("username"),
-      password: form.get("password"),
-      redirect: false,
-    });
+    const login = () =>
+      signIn("credentials", {
+        username: form.get("username"),
+        password: form.get("password"),
+        redirect: false,
+      });
+    let result = await login();
+    // on a fresh browser, the page's first auth requests can race and replace the CSRF cookie
+    // the token was read from; by now the cookie has settled, so one retry succeeds
+    if (result?.error === "MissingCSRF") result = await login();
     setPending(false);
     if (result?.error) {
       setError("wrong username or password");

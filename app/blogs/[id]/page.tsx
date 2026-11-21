@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getBlogById } from "../../services/blogs";
 import { like } from "../../actions/blogs";
@@ -6,16 +5,11 @@ import { addBlogToReadingList } from "../../actions/readingList";
 import { isInReadingList } from "../../services/readingList";
 import { getCurrentUser } from "../../services/session";
 
-// params is runtime data, so with cacheComponents it must be read inside <Suspense>
-export default function BlogPage({ params }: PageProps<"/blogs/[id]">) {
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Blog params={params} />
-    </Suspense>
-  );
-}
+// Render the whole page before sending it, instead of streaming it into a <Suspense> fallback.
+// Streamed content first arrives as a hidden copy, which makes every test id briefly match twice.
+export const instant = false;
 
-async function Blog({ params }: Pick<PageProps<"/blogs/[id]">, "params">) {
+export default async function BlogPage({ params }: PageProps<"/blogs/[id]">) {
   const { id } = await params;
   const blog = await getBlogById(Number(id));
   if (!blog) notFound();
