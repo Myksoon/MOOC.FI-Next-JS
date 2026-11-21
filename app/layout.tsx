@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,7 +10,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+          <Link href="/">home</Link>
+          <Link href="/blogs">blogs</Link>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
