@@ -1,0 +1,15 @@
+import { NextResponse } from "next/server";
+import { db } from "@/db";
+import { blogs, readingList, users } from "@/db/schema";
+
+export async function DELETE() {
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "This endpoint is not available in production" }, { status: 403 });
+  }
+
+  // children before parents, so no foreign key is left pointing at a deleted row
+  await db.delete(readingList);
+  await db.delete(blogs);
+  await db.delete(users);
+  return new NextResponse(null, { status: 204 });
+}

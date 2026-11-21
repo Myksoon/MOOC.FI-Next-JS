@@ -15,3 +15,14 @@ export const getUserByUsername = (username: string) =>
   db.query.users.findFirst({ where: eq(users.username, username), columns: { id: true } });
 
 export const addUser = (user: typeof users.$inferInsert) => db.insert(users).values(user);
+
+export const setToken = (userId: number, token: string) =>
+  db.update(users).set({ token }).where(eq(users.id, userId));
+
+// only public fields: never the password hash or the token itself
+export const getUserByToken = (token: string) =>
+  db.query.users.findFirst({
+    where: eq(users.token, token),
+    columns: { id: true, username: true, name: true },
+    with: { blogs: { columns: { author: true, title: true, url: true } } },
+  });

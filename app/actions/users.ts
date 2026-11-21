@@ -2,7 +2,9 @@
 
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
-import { addUser, getUserByUsername } from "../services/users";
+import { redirect } from "next/navigation";
+import { addUser, getUserByUsername, setToken } from "../services/users";
+import { getCurrentUser } from "../services/session";
 
 type RegisterValues = { username: string; name: string };
 export type RegisterFormState = {
@@ -31,4 +33,12 @@ export async function registerUser(_prev: RegisterFormState, formData: FormData)
   await addUser({ ...values, passwordHash: await bcrypt.hash(password, 10) });
   revalidatePath("/users");
   return { success: true };
+}
+
+export async function generateToken() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+
+  await setToken(user.id, crypto.randomUUID());
+  revalidatePath("/me");
 }

@@ -2,6 +2,9 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getBlogById } from "../../services/blogs";
 import { like } from "../../actions/blogs";
+import { addBlogToReadingList } from "../../actions/readingList";
+import { isInReadingList } from "../../services/readingList";
+import { getCurrentUser } from "../../services/session";
 
 // params is runtime data, so with cacheComponents it must be read inside <Suspense>
 export default function BlogPage({ params }: PageProps<"/blogs/[id]">) {
@@ -17,6 +20,10 @@ async function Blog({ params }: Pick<PageProps<"/blogs/[id]">, "params">) {
   const blog = await getBlogById(Number(id));
   if (!blog) notFound();
 
+  const user = await getCurrentUser();
+  // offered only to logged-in users for blogs someone else added and not yet on their list
+  const canAddToList = user && blog.userId !== user.id && !(await isInReadingList(user.id, blog.id));
+
   return (
     <article data-testid="blog-detail" className="rounded border border-slate-200 bg-white p-6">
       <h2 data-testid="blog-title" className="text-2xl font-bold">
@@ -30,13 +37,23 @@ async function Blog({ params }: Pick<PageProps<"/blogs/[id]">, "params">) {
           {blog.url}
         </a>
       </p>
-      <form action={like} className="flex items-center gap-3">
-        <span>{blog.likes} likes</span>
-        <input type="hidden" name="id" value={blog.id} />
-        <button type="submit" className="btn">
-          like
-        </button>
-      </form>
+      <div className="flex flex-wrap items-center gap-3">
+        <span>likes: {blog.likes}</span>
+        <form action={like}>
+          <input type="hidden" name="id" value={blog.id} />
+          <button type="submit" className="btn">
+            like
+          </button>
+        </form>
+        {canAddToList && (
+          <form action={addBlogToReadingList}>
+            <input type="hidden" name="blogId" value={blog.id} />
+            <button type="submit" data-testid="add-to-reading-list-button" className="btn btn-green">
+              add to reading list
+            </button>
+          </form>
+        )}
+      </div>
     </article>
   );
 }

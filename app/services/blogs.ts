@@ -1,6 +1,7 @@
 import { desc, eq, ilike, sql } from "drizzle-orm";
 import { db } from "../../db";
 import { blogs } from "../../db/schema";
+import { addToReadingList } from "./readingList";
 
 export type Blog = typeof blogs.$inferSelect;
 
@@ -13,6 +14,8 @@ export const getBlogById = (id: number) =>
 
 export const addBlog = async (blog: Pick<Blog, "title" | "author" | "url" | "userId">) => {
   const [created] = await db.insert(blogs).values(blog).returning();
+  // the creator's own blogs start on their reading list
+  if (created.userId) await addToReadingList(created.userId, created.id);
   return created;
 };
 

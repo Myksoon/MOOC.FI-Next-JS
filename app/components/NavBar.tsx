@@ -26,10 +26,11 @@ export default function NavBar() {
       {status === "authenticated" && (
         <>
           <NavLink href="/blogs/new">create new</NavLink>
+          <NavLink href="/me">me</NavLink>
           <span className="ml-auto mr-2 text-slate-300">{session.user?.name} logged in</span>
           <button
             onClick={logout}
-            className="cursor-pointer rounded border border-slate-500 px-3 py-1.5 hover:bg-slate-700"
+            className="cursor-pointer rounded bg-red-600 px-3 py-1.5 font-semibold hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400"
           >
             logout
           </button>
