@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { getBlog } from "../../services/blogs";
+import { getBlogById } from "../../services/blogs";
 import { like } from "../../actions/blogs";
 
 // params is runtime data, so with cacheComponents it must be read inside <Suspense>
@@ -14,7 +14,7 @@ export default function BlogPage({ params }: PageProps<"/blogs/[id]">) {
 
 async function Blog({ params }: Pick<PageProps<"/blogs/[id]">, "params">) {
   const { id } = await params;
-  const blog = getBlog(Number(id));
+  const blog = await getBlogById(Number(id));
   if (!blog) notFound();
 
   return (

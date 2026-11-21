@@ -20,12 +20,8 @@ export default function Blogs({ searchParams }: PageProps<"/blogs">) {
 
 async function BlogList({ searchParams }: Pick<PageProps<"/blogs">, "searchParams">) {
   const { filter } = await searchParams;
-  const query = typeof filter === "string" ? filter.toLowerCase() : "";
-
-  // filter returns a new array, and toSorted a copy, so the service array is not mutated
-  const blogs = getBlogs()
-    .filter((blog) => blog.title.toLowerCase().includes(query))
-    .toSorted((a, b) => b.likes - a.likes);
+  // filtering (ilike) and sorting (likes desc) happen in the database
+  const blogs = await getBlogs(typeof filter === "string" ? filter : "");
 
   return (
     <ul>
