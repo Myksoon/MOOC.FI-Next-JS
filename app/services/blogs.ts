@@ -13,3 +13,10 @@ const blogs: Blog[] = [
 ];
 
 export const getBlogs = () => blogs;
+
+export const addBlog = (blog: Omit<Blog, "id" | "likes">) => {
+  // shortcut: length + 1 is unique only because blogs are never deleted; use a real id once deletion exists
+  const newBlog = { ...blog, id: blogs.length + 1, likes: 0 };
+  blogs.push(newBlog);
+  return newBlog;
+};

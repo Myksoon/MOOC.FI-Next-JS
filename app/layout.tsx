@@ -14,6 +14,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
           <Link href="/">home</Link>
           <Link href="/blogs">blogs</Link>
+          <Link href="/blogs/new">create new</Link>
         </nav>
         {children}
       </body>
